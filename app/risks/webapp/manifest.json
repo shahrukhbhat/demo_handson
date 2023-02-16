@@ -15,6 +15,18 @@
             "version": "1.8.6",
             "toolsId": "2066b5d4-8514-4bef-ba9c-790a32e8c91b"
         },
+        "crossNavigation": {
+            "inbounds": {
+                "Risks-display": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "Risks",
+                    "action": "display"
+                }
+            }
+        },
         "dataSources": {
             "mainService": {
                 "uri": "/service/risk/",
@@ -137,5 +149,9 @@
     "sap.fiori": {
         "registrationIds": [],
         "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "demo_handson.service"
     }
 }
