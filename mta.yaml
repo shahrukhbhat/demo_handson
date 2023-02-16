@@ -51,11 +51,11 @@ resources:
         xsappname: demo_handson-${space}
         tenant-mode: dedicated
         role-collections:
-         - name: 'RiskManager-${space}'
+         - name: 'RiskManagerdemo-${space}'
            description: Manage Risks
            role-template-references:
              - $XSAPPNAME.RiskManager
-         - name: 'RiskViewer-${space}'
+         - name: 'RiskViewedemor-${space}'
            description: View Risks
            role-template-references:
              - $XSAPPNAME.RiskViewer
