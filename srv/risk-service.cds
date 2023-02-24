@@ -27,4 +27,7 @@ service RiskService {
     ]) as projection on my.Mitigations;
 
     annotate Mitigations with @odata.draft.enabled;
+
+    @readonly
+    entity Suppliers as projection on my.Suppliers;
 }

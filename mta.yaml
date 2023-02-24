@@ -3,154 +3,154 @@ ID: demo_handson
 description: A simple CAP project.
 version: 1.0.0
 modules:
-- name: demo_handson-srv
-  type: nodejs
-  path: gen/srv
-  requires:
-  - name: demo_handson-db
-  - name: demo_handson-auth
-  provides:
-  - name: srv-api
-    properties:
-      srv-url: ${default-url}
-  parameters:
-    buildpack: nodejs_buildpack
-  build-parameters:
-    builder: npm-ci
-- name: demo_handson-db-deployer
-  type: hdb
-  path: gen/db
-  requires:
-  - name: demo_handson-db
-  parameters:
-    buildpack: nodejs_buildpack
-- name: demo_handson-destinations
-  type: com.sap.application.content
-  requires:
-  - name: demo_handson-auth
-    parameters:
-      service-key:
-        name: demo_handson-auth-key
-  - name: demo_handson-html5-repo-host
-    parameters:
-      service-key:
-        name: demo_handson-html5-repo-host-key
-  - name: srv-api
-  - name: demo_handson-destination
-    parameters:
-      content-target: true
-  parameters:
-    content:
-      instance:
-        destinations:
-        - Authentication: OAuth2UserTokenExchange
-          Name: demo_handson-app-srv
-          TokenServiceInstanceName: demo_handson-auth
-          TokenServiceKeyName: demo_handson-auth-key
-          URL: ~{srv-api/srv-url}
-          sap.cloud.service: demo_handson.service
-        - Name: demo_handson-html5-repo-host
-          ServiceInstanceName: demo_handson-html5-repo-host
-          ServiceKeyName: demo_handson-html5-repo-host-key
-          sap.cloud.service: demo_handson.service
-        - Authentication: OAuth2UserTokenExchange
-          Name: demo_handson-auth
-          ServiceInstanceName: demo_handson-auth
-          ServiceKeyName: demo_handson-auth-key
-          sap.cloud.service: demo_handson.service
-        existing_destinations_policy: update
-  build-parameters:
-    no-source: true
-- name: demo_handson-app-content
-  type: com.sap.application.content
-  path: .
-  requires:
-  - name: demo_handson-html5-repo-host
-    parameters:
-      content-target: true
-  build-parameters:
-    build-result: resources
+  - name: demo_handson-srv
+    type: nodejs
+    path: gen/srv
     requires:
-    - artifacts:
-      - nsrisks.zip
-      name: nsrisks
-      target-path: resources/
-    - artifacts:
-      - nsmitigations.zip
-      name: nsmitigations
-      target-path: resources/
-- name: nsrisks
-  type: html5
-  path: app/risks
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: nsmitigations
-  type: html5
-  path: app/mitigations
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-resources:
-- name: demo_handson-db
-  type: com.sap.xs.hdi-container
-  parameters:
-    service: hana
-    service-plan: hdi-shared
-- name: demo_handson-auth
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      role-collections:
-      - description: Manage Risks
-        name: RiskManagerdemo-${space}
-        role-template-references:
-        - $XSAPPNAME.RiskManager
-      - description: View Risks
-        name: RiskViewedemor-${space}
-        role-template-references:
-        - $XSAPPNAME.RiskViewer
-      tenant-mode: dedicated
-      xsappname: demo_handson-${space}
-    path: ./xs-security.json
-    service: xsuaa
-    service-plan: application
-- name: demo_handson-destination
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      HTML5Runtime_enabled: true
-      init_data:
+      - name: demo_handson-db
+      - name: demo_handson-auth
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+  - name: demo_handson-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: demo_handson-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: demo_handson-destinations
+    type: com.sap.application.content
+    requires:
+      - name: demo_handson-auth
+        parameters:
+          service-key:
+            name: demo_handson-auth-key
+      - name: demo_handson-html5-repo-host
+        parameters:
+          service-key:
+            name: demo_handson-html5-repo-host-key
+      - name: srv-api
+      - name: demo_handson-destination
+        parameters:
+          content-target: true
+    parameters:
+      content:
         instance:
           destinations:
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
-            Type: HTTP
-            URL: https://ui5.sap.com
+            - Authentication: OAuth2UserTokenExchange
+              Name: demo_handson-app-srv
+              TokenServiceInstanceName: demo_handson-auth
+              TokenServiceKeyName: demo_handson-auth-key
+              URL: ~{srv-api/srv-url}
+              sap.cloud.service: demo_handson.service
+            - Name: demo_handson-html5-repo-host
+              ServiceInstanceName: demo_handson-html5-repo-host
+              ServiceKeyName: demo_handson-html5-repo-host-key
+              sap.cloud.service: demo_handson.service
+            - Authentication: OAuth2UserTokenExchange
+              Name: demo_handson-auth
+              ServiceInstanceName: demo_handson-auth
+              ServiceKeyName: demo_handson-auth-key
+              sap.cloud.service: demo_handson.service
           existing_destinations_policy: update
-    service: destination
-    service-plan: lite
-- name: demo_handson-html5-repo-host
-  type: org.cloudfoundry.managed-service
-  parameters:
-    service: html5-apps-repo
-    service-plan: app-host
+    build-parameters:
+      no-source: true
+  - name: demo_handson-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: demo_handson-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - nsrisks.zip
+          name: nsrisks
+          target-path: resources/
+        - artifacts:
+            - nsmitigations.zip
+          name: nsmitigations
+          target-path: resources/
+  - name: nsrisks
+    type: html5
+    path: app/risks
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: nsmitigations
+    type: html5
+    path: app/mitigations
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+resources:
+  - name: demo_handson-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: demo_handson-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        role-collections:
+          - description: Manage Risks
+            name: RiskManagerdemo-${space}
+            role-template-references:
+              - $XSAPPNAME.RiskManager
+          - description: View Risks
+            name: RiskViewedemor-${space}
+            role-template-references:
+              - $XSAPPNAME.RiskViewer
+        tenant-mode: dedicated
+        xsappname: demo_handson-${space}
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: demo_handson-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+      service: destination
+      service-plan: lite
+  - name: demo_handson-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
 build-parameters:
   before-all:
-  - builder: custom
-    commands:
-    - npm install --production
-    - npx -p @sap/cds-dk cds build --production
-    - npx rimraf gen/db/src/gen/data
+    - builder: custom
+      commands:
+        - npm install --production
+        - npx -p @sap/cds-dk cds build --production
+        - npx rimraf gen/db/src/gen/data

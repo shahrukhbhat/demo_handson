@@ -6,6 +6,11 @@ annotate RiskService.Risks with {
 	descr       @title: 'Description';
 	miti        @title: 'Mitigation';
 	impact      @title: 'Impact';
+	supplier    @(
+        title: 'Supplier',
+        Common.Text: supplier.fullName,
+        Common.TextArrangement: #TextOnly
+    )
 }
 
 annotate RiskService.Mitigations with {
@@ -46,7 +51,7 @@ annotate RiskService.Risks with @(
 			{
 				Value: impact,
 				Criticality: criticality
-			}
+			},
 		],
 		Facets: [
 			{$Type: 'UI.ReferenceFacet', Label: 'Main', Target: '@UI.FieldGroup#Main'}
@@ -61,7 +66,8 @@ annotate RiskService.Risks with @(
 				{
 					Value: impact,
 					Criticality: criticality
-				}
+				},
+				{Value: supplier_ID},
 			]
 		}
 	},
@@ -90,3 +96,33 @@ annotate RiskService.Risks with {
 		}
 	);
 }
+
+// Annotations for value help
+
+annotate RiskService.Risks with {
+    supplier @(
+        Common.ValueList: {
+            Label: 'Suppliers',
+            CollectionPath: 'Suppliers',
+            Parameters: [
+				{ $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: supplier_ID,
+                    ValueListProperty: 'ID'
+                },
+                { $Type: 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'fullName'
+                }
+            ]
+        }
+    );
+}
+
+annotate RiskService.Suppliers with {
+    ID          @(
+        title: 'ID',
+        Common.Text: fullName
+    );
+    fullName   @title: 'Name';
+}
+
+annotate RiskService.Suppliers with @Capabilities.SearchRestrictions.Searchable : false;
