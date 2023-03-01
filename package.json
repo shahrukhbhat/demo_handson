@@ -49,7 +49,10 @@
         }
       },
       "db": {
-        "kind": "sql"
+        "kind": "sqlite",
+        "credentials": {
+          "database": "my.db"
+        }
       },
       "ZGWDEMO": {
         "kind": "odata-v2",
@@ -57,7 +60,8 @@
         "[production]": {
           "credentials": {
             "destination": "ES5",
-            "path": "/sap/opu/odata/iwbep/GWDEMO"
+            "path": "/sap/opu/odata/iwbep/GWDEMO",
+            "forwardAuthToken": true
           }
         }
       },
@@ -70,6 +74,12 @@
             "path": "/sap/opu/odata/sap/SEPMRA_PROD_MAN"
           }
         }
+      },
+      "auth": {
+        "kind": "xsuaa"
+      },
+      "approuter": {
+        "kind": "cloudfoundry"
       }
     }
   }

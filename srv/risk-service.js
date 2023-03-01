@@ -2,6 +2,7 @@
 const cds = require('@sap/cds')
 const axios = require('axios').default
 const { retrieveJwt } = require("@sap-cloud-sdk/core");
+const { response } = require('express');
 
 function getJWT(req) {
     if (typeof req._ !== "undefined") {
@@ -32,8 +33,16 @@ module.exports = cds.service.impl(async function () {
         // const suppliers = await ZGWDEMO.run(SELECT.from('RiskService.Suppliers').columns('ID','fullName').orderBy('ID'));
 
         // return suppliers;
+        ///////////////////////////////////////////////////////
+        //return ZGWDEMO.run(req.query);
+        ///////////////////////////////////////////////////////
 
-        return ZGWDEMO.run(req.query);
+        // if (req._.odataReq._url.path.includes('$count') || req.query.SELECT.columns[0].func === 'count') {
+        //     //return [{ counted: elements.length }];
+        // }
+        const res = await ZGWDEMO.run(req.query);
+        res.$count = res.length;
+        return res;
 
 
         // let result = {}
