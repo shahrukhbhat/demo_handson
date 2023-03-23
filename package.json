@@ -49,10 +49,7 @@
         }
       },
       "db": {
-        "kind": "sqlite",
-        "credentials": {
-          "database": "my.db"
-        }
+        "kind": "sql"
       },
       "ZGWDEMO": {
         "kind": "odata-v2",
@@ -64,22 +61,6 @@
             "forwardAuthToken": true
           }
         }
-      },
-      "ZSEPMRA_PROD_MAN": {
-        "kind": "odata-v2",
-        "model": "srv/external/ZSEPMRA_PROD_MAN",
-        "[production]": {
-          "credentials": {
-            "destination": "ES5",
-            "path": "/sap/opu/odata/sap/SEPMRA_PROD_MAN"
-          }
-        }
-      },
-      "auth": {
-        "kind": "xsuaa"
-      },
-      "approuter": {
-        "kind": "cloudfoundry"
       }
     }
   }

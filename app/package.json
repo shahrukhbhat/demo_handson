@@ -1,12 +1,14 @@
 {
-  "name": "approuter",
-  "dependencies": {
-    "@sap/approuter": "^12.0.0"
-  },
-  "engines": {
-    "node": "^16"
-  },
+  "name": "html5-deployer",
   "scripts": {
-    "start": "node node_modules/@sap/approuter/approuter.js"
+      "start": "node node_modules/@sap/html5-app-deployer/index.js",
+      "build": "bash build.sh"
+  },
+  "workspaces": [
+      "risks",
+      "mitigations"
+  ],
+  "dependencies": {
+      "@sap/html5-app-deployer": "^4.2.3"
   }
 }
